@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
 // Display list of all BookInstances.
-exports.bookinstance_list = asyncHandler(async (req, res, next) => {
+exports.bookinstance_list = asyncHandler(async (req, res) => {
   const allBookInstances = await BookInstance.find().populate("book").exec();
 
   res.render("bookinstance_list", {
@@ -33,7 +33,7 @@ exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
 });
 
 // Display BookInstance create form on GET.
-exports.bookinstance_create_get = asyncHandler(async (req, res, next) => {
+exports.bookinstance_create_get = asyncHandler(async (req, res) => {
   const allBooks = await Book.find({}, "title").sort({ title: 1 }).exec();
 
   res.render("bookinstance_form", {
@@ -57,7 +57,7 @@ exports.bookinstance_create_post = [
     .toDate(),
 
   // Process request after validation and sanitization.
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
@@ -91,7 +91,7 @@ exports.bookinstance_create_post = [
 ];
 
 // Display BookInstance delete form on GET.
-exports.bookinstance_delete_get = asyncHandler(async (req, res, next) => {
+exports.bookinstance_delete_get = asyncHandler(async (req, res) => {
   // Get details of book instance
   const bookinstance = await BookInstance.find({
     bookinstance: req.params.id,
@@ -103,7 +103,7 @@ exports.bookinstance_delete_get = asyncHandler(async (req, res, next) => {
 });
 
 // Handle BookInstance delete on POST.
-exports.bookinstance_delete_post = asyncHandler(async (req, res, next) => {
+exports.bookinstance_delete_post = asyncHandler(async (req, res) => {
   await BookInstance.findByIdAndDelete(req.body.id);
   res.redirect("/catalog/bookinstances");
 });
@@ -145,7 +145,7 @@ exports.bookinstance_update_post = [
     .toDate(),
 
   // Process request after validation and sanitization.
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
